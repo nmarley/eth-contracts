@@ -1,0 +1,6 @@
+[submodule "tip-jar/lib/forge-std"]
+	path = tip-jar/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "tip-jar/lib/openzeppelin-contracts"]
+	path = tip-jar/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
