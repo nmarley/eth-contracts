@@ -42,14 +42,4 @@ contract SwearJarTest is Test {
         uint256 finalBalance = address(this).balance;
         assertGe(finalBalance, initialBalance + 2 ether - 0.01 ether);
     }
-
-    // function test_Increment() public {
-    //     counter.increment();
-    //     assertEq(counter.number(), 1);
-    // }
-    //
-    // function testFuzz_SetNumber(uint256 x) public {
-    //     counter.setNumber(x);
-    //     assertEq(counter.number(), x);
-    // }
 }
