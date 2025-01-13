@@ -2,17 +2,17 @@
 pragma solidity ^0.8.13;
 
 import {Script, console} from "forge-std/Script.sol";
-import {Counter} from "../src/Counter.sol";
+import {SwearJar} from "../src/SwearJar.sol";
 
-contract CounterScript is Script {
-    Counter public counter;
+contract SwearJarScript is Script {
+    SwearJar public swearJar;
 
     function setUp() public {}
 
     function run() public {
         vm.startBroadcast();
 
-        counter = new Counter();
+        swearJar = new SwearJar();
 
         vm.stopBroadcast();
     }

@@ -11,13 +11,9 @@ contract SwearJar is Ownable {
     constructor() Ownable(msg.sender) {}
 
     // Anyone can pay into the swear jar
-    function payForSwearing() public payable {
-        require(msg.value > 0, "Pay up");
-        emit SwearJarPaid(msg.sender, msg.value);
-    }
-
     receive() external payable {
-        payForSwearing();
+        require(msg.value > 0, "Payment required");
+        emit SwearJarPaid(msg.sender, msg.value);
     }
 
     // Only the owner can withdraw funds from the contract
