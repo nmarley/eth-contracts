@@ -13,6 +13,9 @@ contract SwearJarTest is Test {
         vm.deal(address(this), 10 ether);
     }
 
+    // Allow the test contract to receive ETH
+    receive() external payable {}
+
     function test_Receive() public {
         // Send 1 ether via direct call to contract's receive function
         (bool success,) = address(swearJar).call{value: 1 ether}("");
