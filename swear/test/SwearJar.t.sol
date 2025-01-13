@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
 import {SwearJar} from "../src/SwearJar.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SwearJarTest is Test {
     SwearJar public swearJar;
@@ -44,5 +45,20 @@ contract SwearJarTest is Test {
         // Owner balance should have increased by approximately 2 ether (less gas fees)
         uint256 finalBalance = address(this).balance;
         assertGe(finalBalance, initialBalance + 2 ether - 0.01 ether);
+    }
+
+    function test_WithdrawNotOwner() public {
+        // Create a new address to simulate a non-owner
+        address nonOwner = address(0x1234beef);
+        vm.deal(nonOwner, 5 ether);
+
+        // Send 1 ether to the contract first
+        (bool success,) = address(swearJar).call{value: 1 ether}("");
+        assertTrue(success, "Payment failed");
+
+        // Attempt withdrawal by non-owner, expecting revert
+        vm.prank(nonOwner);
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, nonOwner));
+        swearJar.withdraw(payable(nonOwner));
     }
 }
