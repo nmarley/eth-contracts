@@ -22,26 +22,26 @@ contract SwearJarTest is Test {
         assertEq(address(swearJar).balance, 1 ether);
     }
 
-    // function test_WithdrawByOwner() public {
-    //     // Send 2 ether to the contract
-    //     (bool success,) = address(swearJar).call{value: 2 ether}("");
-    //     assertTrue(success, "Initial payment failed");
-    //
-    //     // Check balance before withdrawal
-    //     uint256 initialBalance = address(this).balance;
-    //     uint256 jarBalance = address(swearJar).balance;
-    //     assertEq(jarBalance, 2 ether);
-    //
-    //     // Withdraw funds to this contract (owner)
-    //     swearJar.withdrawToOwner();
-    //
-    //     // Contract balance should be 0 after withdrawal
-    //     assertEq(address(swearJar).balance, 0);
-    //
-    //     // Owner balance should have increased by approximately 2 ether (less gas fees)
-    //     uint256 finalBalance = address(this).balance;
-    //     assertGe(finalBalance, initialBalance + 2 ether - 0.01 ether);
-    // }
+    function test_WithdrawByOwner() public {
+        // Send 2 ether to the contract
+        (bool success,) = address(swearJar).call{value: 2 ether}("");
+        assertTrue(success, "Initial payment failed");
+
+        // Check balance before withdrawal
+        uint256 initialBalance = address(this).balance;
+        uint256 jarBalance = address(swearJar).balance;
+        assertEq(jarBalance, 2 ether);
+
+        // Withdraw funds to this contract (owner)
+        swearJar.withdrawToOwner();
+
+        // Contract balance should be 0 after withdrawal
+        assertEq(address(swearJar).balance, 0);
+
+        // Owner balance should have increased by approximately 2 ether (less gas fees)
+        uint256 finalBalance = address(this).balance;
+        assertGe(finalBalance, initialBalance + 2 ether - 0.01 ether);
+    }
 
     // function test_Increment() public {
     //     counter.increment();
