@@ -1,14 +1,42 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.20;
 
-contract Counter {
-    uint256 public number;
+// import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-    function setNumber(uint256 newNumber) public {
-        number = newNumber;
+contract SwearJar is Ownable {
+    event SwearJarPaid(address indexed from, uint256 amount);
+    event JarEmptied(address indexed to, uint256 amount);
+
+    construct() Ownable(msg.sender) {}
+
+    // Anyone can pay into the swear jar
+    function payForSwearing() public payable {
+        require(msg.value > 0, "Pay up");
+        emit SwearJarPaid(msg.sender, msg.value);
     }
 
-    function increment() public {
-        number++;
+    receive() external payable {
+        payForSwearing();
+    }
+
+    // Only the owner can withdraw funds from the contract
+    function withdraw(address payable to) public onlyOwner {
+        require(to != address(0), "Bad addr");
+        uint256 balance = address(this).balance;
+
+        (bool success, ) = to.call{value: balance}("");
+        require(success, "Withdraw failed");
+
+        emit JarEmptied(to, balance);
+    }
+
+    // Convenience function to withdraw to the owner
+    function withdrawToOwner() public onlyOwner {
+        withdraw(payable(owner()));
+    }
+
+    function getBalance() public view returns (uint256) {
+        return address(this).balance;
     }
 }
