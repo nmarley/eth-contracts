@@ -8,7 +8,7 @@ contract SwearJar is Ownable {
     event SwearJarPaid(address indexed from, uint256 amount);
     event JarEmptied(address indexed to, uint256 amount);
 
-    construct() Ownable(msg.sender) {}
+    constructor() Ownable(msg.sender) {}
 
     // Anyone can pay into the swear jar
     function payForSwearing() public payable {
@@ -25,7 +25,7 @@ contract SwearJar is Ownable {
         require(to != address(0), "Bad addr");
         uint256 balance = address(this).balance;
 
-        (bool success, ) = to.call{value: balance}("");
+        (bool success,) = to.call{value: balance}("");
         require(success, "Withdraw failed");
 
         emit JarEmptied(to, balance);
