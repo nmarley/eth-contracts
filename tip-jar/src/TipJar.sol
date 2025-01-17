@@ -4,16 +4,16 @@ pragma solidity ^0.8.20;
 // import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract SwearJar is Ownable {
-    event SwearJarPaid(address indexed from, uint256 amount);
+contract TipJar is Ownable {
+    event TipJarPaid(address indexed from, uint256 amount);
     event JarEmptied(address indexed to, uint256 amount);
 
     constructor() Ownable(msg.sender) {}
 
-    // Anyone can pay into the swear jar
+    // Anyone can pay into the tip jar
     receive() external payable {
         require(msg.value > 0, "Payment required");
-        emit SwearJarPaid(msg.sender, msg.value);
+        emit TipJarPaid(msg.sender, msg.value);
     }
 
     // Only the owner can withdraw funds from the contract

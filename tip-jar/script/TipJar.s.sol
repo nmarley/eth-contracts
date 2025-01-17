@@ -2,17 +2,17 @@
 pragma solidity ^0.8.13;
 
 import {Script, console} from "forge-std/Script.sol";
-import {SwearJar} from "../src/SwearJar.sol";
+import {TipJar} from "../src/TipJar.sol";
 
-contract SwearJarScript is Script {
-    SwearJar public swearJar;
+contract TipJarScript is Script {
+    TipJar public tipJar;
 
     function setUp() public {}
 
     function run() public {
         vm.startBroadcast();
 
-        swearJar = new SwearJar();
+        tipJar = new TipJar();
 
         vm.stopBroadcast();
     }
