@@ -76,4 +76,46 @@ contract TipJarTest is Test {
         // Check tip count
         assertEq(tipJar.tipCount(), 3);
     }
+
+    function test_BiggestTipAndTipper() public {
+        address tipper1 = address(0x1111);
+        address tipper2 = address(0x2222);
+        address tipper3 = address(0x3333);
+
+        vm.deal(tipper1, 5 ether);
+        vm.deal(tipper2, 5 ether);
+        vm.deal(tipper3, 5 ether);
+
+        // Initial state: no tips yet
+        assertEq(tipJar.biggestTip(), 0);
+        assertEq(tipJar.biggestTipper(), address(0));
+
+        // First tip: 1 ether
+        vm.prank(tipper1);
+        (bool success,) = address(tipJar).call{value: 1 ether}("");
+        assertTrue(success);
+        assertEq(tipJar.biggestTip(), 1 ether);
+        assertEq(tipJar.biggestTipper(), tipper1);
+
+        // Second tip: 0.5 ether (smaller, should not update)
+        vm.prank(tipper2);
+        (success,) = address(tipJar).call{value: 0.5 ether}("");
+        assertTrue(success);
+        assertEq(tipJar.biggestTip(), 1 ether);
+        assertEq(tipJar.biggestTipper(), tipper1);
+
+        // Third tip: 2 ether (bigger, should update)
+        vm.prank(tipper3);
+        (success,) = address(tipJar).call{value: 2 ether}("");
+        assertTrue(success);
+        assertEq(tipJar.biggestTip(), 2 ether);
+        assertEq(tipJar.biggestTipper(), tipper3);
+
+        // Fourth tip: equal to biggest (should not update)
+        vm.prank(tipper1);
+        (success,) = address(tipJar).call{value: 2 ether}("");
+        assertTrue(success);
+        assertEq(tipJar.biggestTip(), 2 ether);
+        assertEq(tipJar.biggestTipper(), tipper3);
+    }
 }

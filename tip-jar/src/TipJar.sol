@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract TipJar is Ownable {
     uint256 public tipCount;
+    uint256 public biggestTip;
+    address public biggestTipper;
 
     event TipJarPaid(address indexed from, uint256 amount);
     event JarEmptied(address indexed to, uint256 amount);
@@ -16,6 +18,10 @@ contract TipJar is Ownable {
     receive() external payable {
         require(msg.value > 0, "Payment required");
         tipCount++;
+        if (msg.value > biggestTip) {
+            biggestTip = msg.value;
+            biggestTipper = msg.sender;
+        }
         emit TipJarPaid(msg.sender, msg.value);
     }
 
