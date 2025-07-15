@@ -5,6 +5,8 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract TipJar is Ownable {
+    uint256 public tipCount;
+
     event TipJarPaid(address indexed from, uint256 amount);
     event JarEmptied(address indexed to, uint256 amount);
 
@@ -13,6 +15,7 @@ contract TipJar is Ownable {
     // Anyone can pay into the tip jar
     receive() external payable {
         require(msg.value > 0, "Payment required");
+        tipCount++;
         emit TipJarPaid(msg.sender, msg.value);
     }
 
