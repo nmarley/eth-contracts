@@ -6,16 +6,20 @@ import {SimpleBank} from "../src/SimpleBank.sol";
 
 contract SimpleBankTest is Test {
     SimpleBank public bank;
+    address public victim = address(0xbeef);
 
     function setUp() public {
         bank = new SimpleBank();
+
+        // Give the victim some ETH and have them deposit
+        vm.deal(victim, 1 ether);
+        vm.prank(victim);
+        bank.deposit{value: 1 ether}();
     }
 
     function testDepositWorks() public {
-        // Give the test contract 1 ether so it can deposit
-        vm.deal(address(this), 1 ether);
-
-        bank.deposit{value: 1 ether}();
-        assertEq(bank.balances(address(this)), 1 ether);
+        // Sanity check - victim has 1 ether recorded
+        assertEq(bank.balances(victim), 1 ether);
+        assertEq(address(bank).balance, 1 ether);
     }
 }
