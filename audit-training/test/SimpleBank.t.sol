@@ -10,6 +10,9 @@ contract SimpleBankTest is Test {
     SimpleBankAttacker public attacker;
     address public victim = address(0xbeef);
 
+    // Allow test contract to receive funds
+    receive() external payable {}
+
     function setUp() public {
         bank = new SimpleBank();
 
