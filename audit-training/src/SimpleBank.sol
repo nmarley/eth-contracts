@@ -13,7 +13,7 @@ contract SimpleBank {
         require(amount > 0, "Nothing to withdraw");
 
         // Bug: sends ETH before updating balance
-        (bool ok, ) = msg.sender.call{value: amount}("");
+        (bool ok,) = msg.sender.call{value: amount}("");
         require(ok, "Failed to send");
 
         balances[msg.sender] = 0;
